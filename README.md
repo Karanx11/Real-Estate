@@ -3,12 +3,7 @@
 A full-stack **Real Estate CRM application** that allows users to manage leads and properties with secure authentication and user-specific data.
 
 ---
-## 📸 Screenshots
-
-### 🏠 Home / Hero
-![Home](./frontend/src/assets/screenshots/hero.png)
-
----
+## 📸 Screenshot
 
 ### 🔐 Authentication (Login / Register)
 ![Auth](./frontend/src/assets/screenshots/auth.png)
