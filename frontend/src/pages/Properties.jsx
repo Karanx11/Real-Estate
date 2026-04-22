@@ -16,7 +16,7 @@ function Properties() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/properties",
+        "https://real-estate-z99v.onrender.com/api/properties",
         {
           headers: { Authorization: token }
         }
@@ -46,7 +46,7 @@ function Properties() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/properties",
+        "https://real-estate-z99v.onrender.com/api/properties",
         form,
         {
           headers: { Authorization: token }

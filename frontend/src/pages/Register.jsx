@@ -27,11 +27,11 @@ function Register() {
 
     try {
       // Register
-      await axios.post("http://localhost:5000/api/auth/register", form);
+      await axios.post("https://real-estate-z99v.onrender.com/api/auth/register", form);
 
       // Auto login
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://real-estate-z99v.onrender.com/api/auth/login",
         {
           email: form.email,
           password: form.password

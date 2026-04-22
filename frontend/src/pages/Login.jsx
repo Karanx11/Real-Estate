@@ -17,14 +17,14 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://real-estate-z99v.onrender.com/api/auth/login",
         form
       );
 
-      // ✅ Save token
+      // Save token
       localStorage.setItem("token", res.data.token);
 
-      // ✅ Redirect (no reload needed)
+      // Redirect (no reload needed)
       navigate("/");
 
     } catch (err) {

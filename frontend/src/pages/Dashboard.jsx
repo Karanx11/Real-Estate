@@ -15,14 +15,14 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const leadsRes = await axios.get(
-        "http://localhost:5000/api/leads",
+        "https://real-estate-z99v.onrender.com/api/leads",
         {
           headers: { Authorization: token }
         }
       );
 
       const propsRes = await axios.get(
-        "http://localhost:5000/api/properties",
+        "https://real-estate-z99v.onrender.com/api/properties",
         {
           headers: { Authorization: token }
         }

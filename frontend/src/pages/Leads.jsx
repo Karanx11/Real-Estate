@@ -17,7 +17,7 @@ function Leads() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/leads",
+        "https://real-estate-z99v.onrender.com/api/leads",
         {
           headers: { Authorization: token }
         }
@@ -47,7 +47,7 @@ function Leads() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/leads",
+        "https://real-estate-z99v.onrender.com/api/leads",
         form,
         {
           headers: { Authorization: token }
