@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // 🔥 NEW
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -16,19 +17,21 @@ function Login() {
     }
 
     try {
+      setLoading(true); 
+
       const res = await axios.post(
         "https://real-estate-z99v.onrender.com/api/auth/login",
         form
       );
 
-      // Save token
       localStorage.setItem("token", res.data.token);
 
-      // Redirect (no reload needed)
       navigate("/");
 
     } catch (err) {
       alert("Invalid credentials");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -72,12 +75,19 @@ function Login() {
             </button>
           </div>
 
+          {/* BUTTON WITH LOADER */}
           <button
             type="submit"
-            className="w-full bg-primary py-3 rounded-lg font-semibold hover:opacity-80 transition"
+            disabled={loading}
+            className="w-full bg-primary py-3 rounded-lg font-semibold flex items-center justify-center hover:opacity-80 transition"
           >
-            Login
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              "Login"
+            )}
           </button>
+
         </form>
 
         <p className="text-center text-gray-400 mt-6">
