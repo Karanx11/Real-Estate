@@ -10,6 +10,7 @@ function Register() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // 🔥 NEW
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -26,8 +27,13 @@ function Register() {
     }
 
     try {
+      setLoading(true); 
+
       // Register
-      await axios.post("https://real-estate-z99v.onrender.com/api/auth/register", form);
+      await axios.post(
+        "https://real-estate-z99v.onrender.com/api/auth/register",
+        form
+      );
 
       // Auto login
       const res = await axios.post(
@@ -38,14 +44,15 @@ function Register() {
         }
       );
 
-      // ✅ Save token
       localStorage.setItem("token", res.data.token);
 
-      // ✅ Redirect
       navigate("/");
 
     } catch (err) {
+      console.error(err); 
       alert(err.response?.data?.msg || "Registration failed");
+    } finally {
+      setLoading(false); // stop loading
     }
   };
 
@@ -99,12 +106,19 @@ function Register() {
             </button>
           </div>
 
+          {/* BUTTON WITH LOADER */}
           <button
             type="submit"
-            className="w-full bg-primary py-3 rounded-lg font-semibold"
+            disabled={loading}
+            className="w-full bg-primary py-3 rounded-lg font-semibold flex items-center justify-center"
           >
-            Register & Login
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              "Register & Login"
+            )}
           </button>
+
         </form>
 
         <p className="text-center text-gray-400 mt-6">

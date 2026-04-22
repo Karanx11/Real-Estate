@@ -4,36 +4,66 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-// Register
+// REGISTER
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    // validation
+    if (!name || !email || !password) {
+      return res.status(400).json({ msg: "All fields are required" });
+    }
 
-  const user = await User.create({
-    name,
-    email,
-    password: hashedPassword
-  });
+    // check existing user
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ msg: "User already exists" });
+    }
 
-  res.json(user);
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword
+    });
+
+    res.json({ msg: "User registered successfully" });
+
+  } catch (err) {
+    console.error(err); 
+    res.status(500).json({ msg: "Server error" });
+  }
 });
 
-// Login
+
+// LOGIN
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  if (!user) return res.status(400).json({ msg: "User not found" });
+    if (!user) return res.status(400).json({ msg: "User not found" });
 
-  const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
-  if (!isMatch) return res.status(400).json({ msg: "Invalid password" });
+    if (!isMatch) return res.status(400).json({ msg: "Invalid password" });
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-  res.json({ token });
+    res.json({ token });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
 });
 
 module.exports = router;
